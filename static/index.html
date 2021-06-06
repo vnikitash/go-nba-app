@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="undefined" crossorigin="anonymous"></script>
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <h2>NBA Dashboard</h2>
+    <button id="st" class="btn btn-success" onclick="start()">Start</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Score</th>
+                <th>AST</th>
+                <th>Score2 Rate</th>
+                <th>Score3 Rate</th>
+            </tr>
+        </thead>
+        <tbody id="contents">
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+
+<script>
+    $( document ).ready(function (){
+        setInterval(function () {
+            $.get('/data', function (res) {
+                console.log(res[0])
+                $("#contents").empty()
+                for (let i = 0; i < res.length; i++) {
+                    let html = "<tr>"
+                    html += "<td>" + res[i].TeamA + "</td>";
+                    html += "<td>" + res[i].ScoreA + "</td>";
+                    html += "<td>" + res[i].ASTA + "</td>";
+                    html += "<td>" + res[i].TeamAScored2 + "/" +  res[i].TeamAScored2Att + " (" + Math.round(res[i].TeamAScored2/res[i].TeamAScored2Att * 100) + "%) </td>";
+                    html += "<td>" + res[i].TeamAScored3 + "/" +  res[i].TeamAScored3Att + " (" + Math.round(res[i].TeamAScored3/res[i].TeamAScored3Att * 100) + "%) </td>";
+                    html += "</tr>"
+                    html += "<tr>"
+                    html += "<td>" + res[i].TeamB + "</td>";
+                    html += "<td>" + res[i].ScoreB + "</td>";
+                    html += "<td>" + res[i].ASTB + "</td>";
+                    html += "<td>" + res[i].TeamBScored2 + "/" +  res[i].TeamBScored2Att + " (" + Math.round(res[i].TeamBScored2/res[i].TeamBScored2Att * 100) + "%) </td>";
+                    html += "<td>" + res[i].TeamBScored3 + "/" +  res[i].TeamBScored3Att + " (" + Math.round(res[i].TeamBScored3/res[i].TeamBScored3Att * 100) + "%) </td>";
+                    html += "</tr>"
+                    html += "<tr>"
+                    html += "<td colspan='5'>-</td>";
+                    html += "</tr>"
+
+
+                    $("#contents").append(html)
+
+                }
+
+            })
+        }, 2000)
+    })
+
+    function start() {
+        $.get('/start', function (res) {
+            console.log("New games started")
+            $("#st").hide()
+        })
+    }
+</script>
+
+</html>
