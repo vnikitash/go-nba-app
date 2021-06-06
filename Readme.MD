@@ -23,3 +23,5 @@ Where `127.0.0.1` is host of your local DB and `3306` its port
 And run `go run cmd/*.go`
 
 But before do not forget to import dump file from the mysql-dump folder
+
+![img.png](img.png)
